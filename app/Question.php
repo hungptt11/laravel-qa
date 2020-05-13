@@ -26,6 +26,17 @@ class Question extends Model
         return route("question.show", $this->id);
     }
 
+    public function getStatusAttribute()
+    {
+        if ($this->answers > 0) {
+            if($this->best_answer_id)
+                return "answer-accepted";
+
+            return "answered";
+        }
+        return "unanswered";
+    }
+
     public function getCreatedDateAttribute()
     {
         //display easly for human to read
