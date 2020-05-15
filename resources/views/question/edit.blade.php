@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h2>Create Question</h2>
+                        <h2>Edit Question</h2>
                         <div class="ml-auto">
                             <a class="btn btn-outline-secondary" href="{{route('question.index')}}">
                                 Back to Questions
@@ -16,8 +16,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('question.store')}}" method="POST">
-                       @include('question._form', ['buttonText' => 'Ask this question']);
+                    <form action="{{route('question.update', $question->id)}}" method="POST">
+                        {{method_field('PUT')}}
+                        @include('question._form', ['buttonText' => 'Save this question']);
                     </form>
                 </div>
             </div>

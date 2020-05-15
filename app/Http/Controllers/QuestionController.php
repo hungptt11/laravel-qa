@@ -32,7 +32,7 @@ class QuestionController extends Controller
     public function create()
     {
         $question = new Question();
-        return view('question.create')->with('quetion', $question);
+        return view('question.create')->with('question', $question);
     }
 
     /**
@@ -66,9 +66,13 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function edit(Question $question)
+    public function edit($id)
     {
-        //
+        $question = Question::findOrFail($id);
+        if (empty($question)) {
+            abort(404);
+        }
+        return view('question.edit')->with('question', $question);
     }
 
     /**
@@ -78,9 +82,10 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(AskQuestionRequest $request, Question $question)
     {
-        //
+        $question->update($request->only('title', 'body'));
+        return redirect()->route('question.index')->with('success', 'Your\' question has been updated');
     }
 
     /**

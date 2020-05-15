@@ -9,7 +9,8 @@
                     <div class="d-flex align-items-center">
                         <h2>All Question</h2>
                         <div class="ml-auto">
-                            <a class="btn btn-outline-secondary" href="{{route('question.create')}}">Ask new Question</a>
+                            <a class="btn btn-outline-secondary" href="{{route('question.create')}}">Ask new
+                                Question</a>
                         </div>
                     </div>
                 </div>
@@ -30,9 +31,15 @@
                             </div>
                         </div>
                         <div class="media-body">
-                            <h4 class="mt-0">
+                            <div class="d-flex  align-items-center">
+                                <h3 class="mt-0">
                                 <a href="{{ $question->url }}"> {{$question->title}}</a>
-                            </h4>
+                                </h3>
+                                <div class="ml-auto">
+                                    <a class="btn btn-sm btn-outline-info"
+                                        href="{{route('question.edit', $question->id)}}">Edit</a>
+                                </div>
+                            </div>
                             <p class="lead">
                                 Asked by
                                 <a href="{{ $question->user->url }}">{{ $question->user->name }}</a>
