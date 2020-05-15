@@ -44,7 +44,7 @@ class User extends Authenticatable
 
     public function getUrlAttribute()
     {
-       // return route("user.show", $this->id);
-       return "#";
+        // return route("user.show", $this->id);
+        return "#";
     }
 }
