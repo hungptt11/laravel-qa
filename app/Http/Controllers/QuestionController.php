@@ -57,7 +57,8 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        Question::increment('views');
+        return view('question.show')->with('question', $question);
     }
 
     /**

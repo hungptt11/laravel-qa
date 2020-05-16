@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Str;
+use Parsedown;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,13 +24,15 @@ class Question extends Model
 
     public function getUrlAttribute()
     {
-        return route("question.show", $this->id);
+        //Change the url from id to slug;
+        //return route("question.show", $this->id);
+        return route("question.show", $this->slug);
     }
 
     public function getStatusAttribute()
     {
         if ($this->answers > 0) {
-            if($this->best_answer_id)
+            if ($this->best_answer_id)
                 return "answer-accepted";
 
             return "answered";
@@ -41,5 +44,10 @@ class Question extends Model
     {
         //display easly for human to read
         return $this->created_at->diffForHumans();
+    }
+
+    public function getBodyHtmlAttribute()
+    {
+        return Parsedown::instance()->text($this->body);
     }
 }
