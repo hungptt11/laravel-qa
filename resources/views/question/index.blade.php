@@ -37,14 +37,21 @@
                                 </h3>
                                 <div class="ml-auto">
                                     <div class="d-flex justify-content-between">
+                                        @auth
+                                        @if(Auth::user()->can('update-question', $question))
                                         <a class="btn btn-sm btn-outline-info"
                                             href="{{route('question.edit', $question->id)}}">Edit</a>
-                                        <form style="margin-left: 10px" action="{{route('question.destroy', $question->id)}}"
-                                            method="POST">
+                                        @endif
+                                        @if(Auth::user()->can('delete-question', $question))
+                                        <form style="margin-left: 10px"
+                                            action="{{route('question.destroy', $question->id)}}" method="POST">
                                             {{method_field('DELETE')}}
                                             @csrf
-                                            <button type="submit" onclick="return confirm('Are you sure')" class="btn btn-sm btn-outline-danger">Delete</button>
+                                            <button type="submit" onclick="return confirm('Are you sure')"
+                                                class="btn btn-sm btn-outline-danger">Delete</button>
                                         </form>
+                                        @endif
+                                        @endauth
                                     </div>
                                 </div>
                             </div>
