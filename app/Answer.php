@@ -7,7 +7,7 @@ use Parsedown;
 
 class Answer extends Model
 {
-
+    protected $fillable = ['body', 'user_id'];
     public function User()
     {
         return $this->belongsTo(User::class);
