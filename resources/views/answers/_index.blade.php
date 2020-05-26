@@ -23,7 +23,10 @@
                                     d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
                             </svg>
                         </a>
-                        <a title="mask this answer as best answer" class="vote-accept mt-2 {{$answer->status}}">
+                        @can('accept', $answer)
+                        <a title="mask this answer as best answer"
+                            onclick="event.preventDefault; document.getElementById('accept-answer-{{$answer->id}}').submit()"
+                            class="vote-accept mt-2 {{$answer->status}}">
                             <svg class="bi bi-check" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -31,6 +34,23 @@
                                     clip-rule="evenodd" />
                             </svg>
                         </a>
+                        <form style="display:none" id="accept-answer-{{$answer->id}}"
+                            action="{{ route('answers.accept', $answer->id) }}" method="POST">
+                            @csrf
+                        </form>
+                        @else
+                        @if($answer->isBest)
+                        <a title="mask this answer as best answer" onclick="event.preventDefault;"
+                            class="vote-accept mt-2 {{$answer->status}}">
+                            <svg class="bi bi-check" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        @endif
+                        @endcan
                     </div>
                     <div class="media-body">
                         {!! $answer->body_html !!}

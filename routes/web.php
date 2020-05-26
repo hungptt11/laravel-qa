@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('question/index');
 });
 
 Auth::routes();
@@ -27,3 +27,5 @@ Route::get('question/{slug}', 'QuestionController@show')->name('question.show');
 //Route::post('question/{question}/answer', 'AnswersController@store')->name('answer.store');
 
 Route::resource('question.answer', 'AnswersController')->only(['store', 'edit', 'update', 'destroy']);
+
+Route::post('/answers/{answer}/accept', 'AcceptAnswersController@accept')->name('answers.accept');
