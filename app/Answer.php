@@ -7,6 +7,7 @@ use Parsedown;
 
 class Answer extends Model
 {
+    use VotableTrait;
     protected $fillable = ['body', 'user_id'];
     public function User()
     {
@@ -50,21 +51,8 @@ class Answer extends Model
             $answer->Question->decrement('answers_count');
         });
         /* static::saved(function ($answer) {
-            $answer->Question->increment('answers_count');
-        }); */
+    $answer->Question->increment('answers_count');
+    }); */
     }
 
-    public function votes()
-    {
-        return $this->morphToMany(User::class, 'votable');
-    }
-
-    public function upVotes()
-    {
-        return $this->votes()->wherePivot('vote', 1);
-    }
-    public function downVotes()
-    {
-        return $this->votes()->wherePivot('vote', -1);
-    }
 }
