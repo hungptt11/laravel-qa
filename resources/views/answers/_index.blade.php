@@ -8,21 +8,33 @@
                 @foreach ($Answers as $answer)
                 <div class="media">
                     <div class="d-flex flex-column vote-controls">
-                        <a title="this answer is useful" class="vote-up">
+                        <a title="this answer is useful" class="vote-up {{ Auth::guest() ? 'off' : '' }}"
+                            onclick="event.preventDefault; document.getElementById('up-vote-answer-{{$answer->id}}').submit()">
                             <svg class="bi bi-caret-up-fill" width="2em" height="2em" viewBox="0 0 16 16"
                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 00.753-1.659l-4.796-5.48a1 1 0 00-1.506 0z" />
                             </svg>
                         </a>
-                        <span class="votes-count">1230</span>
-                        <a title="this answer is not useful" class="vote-down off">
+                        <form style="display:none" id="up-vote-answer-{{$answer->id}}"
+                            action="{{ route('answers.vote', $answer->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="vote" value="1">
+                        </form>
+                        <span class="votes-count">{{$answer->votes_count}}</span>
+                        <a title="this answer is not useful" class="vote-down {{ Auth::guest() ? 'off' : '' }}"
+                            onclick="event.preventDefault; document.getElementById('down-vote-answer-{{$answer->id}}').submit()">
                             <svg class="bi bi-caret-down-fill" width="2em" height="2em" viewBox="0 0 16 16"
                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
                             </svg>
                         </a>
+                        <form style="display:none" id="down-vote-answer-{{$answer->id}}"
+                            action="{{ route('answers.vote', $answer->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="vote" value="-1">
+                        </form>
                         @can('accept', $answer)
                         <a title="mask this answer as best answer"
                             onclick="event.preventDefault; document.getElementById('accept-answer-{{$answer->id}}').submit()"
