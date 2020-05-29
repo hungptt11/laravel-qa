@@ -20,7 +20,8 @@
                     <div class="media">
                         <div class="d-flex flex-column counters">
                             <div class="vote">
-                                <strong>{{ $question->votes_count }}</strong> {{ Str::plural('vote', $question->votes_count) }}
+                                <strong>{{ $question->votes_count }}</strong>
+                                {{ Str::plural('vote', $question->votes_count) }}
                             </div>
                             <div class="status {{$question->status}}">
                                 <strong>{{ $question->answers_count }}</strong>
@@ -60,7 +61,9 @@
                                 <a href="{{ $question->user->url }}">{{ $question->user->name }}</a>
                                 <small class="text-muted">{{ $question->created_date }}</small>
                             </p>
-                            {{Str::limit($question->body, 250)}}
+                            <div class="nothing">
+                                {{ $question->excerpt  }}
+                            </div>
                         </div>
                     </div>
                     <hr>

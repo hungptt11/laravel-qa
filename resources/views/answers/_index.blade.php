@@ -11,7 +11,7 @@
                     'model' => $answer
                     ])
                     <div class="media-body">
-                        {!! $answer->body_html !!}
+                        {{ strip_tags($answer->body_html) }}
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="d-flex flex-row mr-3">

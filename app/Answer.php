@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use Purifier;
 
 use Illuminate\Database\Eloquent\Model;
 use Parsedown;
@@ -21,7 +22,7 @@ class Answer extends Model
 
     public function getBodyHtmlAttribute()
     {
-        return Parsedown::instance()->text($this->body);
+        return clean(Parsedown::instance()->text($this->body));
     }
 
     public function getCreatedDateAttribute()

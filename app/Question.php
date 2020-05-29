@@ -2,10 +2,10 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Parsedown;
-
-use Illuminate\Database\Eloquent\Model;
+use Purifier;
 
 class Question extends Model
 {
@@ -33,8 +33,9 @@ class Question extends Model
     public function getStatusAttribute()
     {
         if ($this->answers_count > 0) {
-            if ($this->best_answer_id)
+            if ($this->best_answer_id) {
                 return "answer-accepted";
+            }
 
             return "answered";
         }
@@ -47,9 +48,14 @@ class Question extends Model
         return $this->created_at->diffForHumans();
     }
 
+    public function setBodyAttribute($value)
+    {
+        $this->attributes['body'] = clean($value);
+    }
+
     public function getBodyHtmlAttribute()
     {
-        return Parsedown::instance()->text($this->body);
+        return clean(Parsedown::instance()->text($this->body));
     }
 
     public function answers()
@@ -83,4 +89,13 @@ class Question extends Model
         return $this->favorites->count();
     }
 
+    public function GetExcerptAttribute()
+    {
+        return $this->Excerpt(300);
+    }
+
+    public function Excerpt($lenght)
+    {
+        return Str::limit(strip_tags($this->getBodyHtmlAttribute()), $lenght);
+    }
 }
