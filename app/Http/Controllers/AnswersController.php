@@ -19,13 +19,13 @@ class AnswersController extends Controller
     {
         /* Ussing this syntax
         $request->validate([
-            'body' => 'required'
+        'body' => 'required'
         ]);
         $question->answers()->create(['body' => $request->body, 'user_id' => Auth::id()]);*/
 
         //or using below syntax for short
         $question->answers()->create($request->validate([
-            'body' => 'required'
+            'body' => 'required',
         ]) + ['user_id' => Auth::id()]);
 
         return back()->with('success', 'Your answer has been created');
@@ -37,12 +37,12 @@ class AnswersController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Question $question,  Answer $answer)
+    public function edit(Question $question, Answer $answer)
     {
         $this->authorize('update', $answer);
         $data = [
             'question' => $question,
-            'answer' => $answer
+            'answer' => $answer,
         ];
         return view('answers.edit')->with($data);
     }
@@ -54,11 +54,11 @@ class AnswersController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question,  Answer $answer)
+    public function update(Request $request, Question $question, Answer $answer)
     {
         $this->authorize('update', $answer);
         $answer->update($request->validate([
-            'body' => 'required'
+            'body' => 'required',
         ]));
         return redirect()->route('question.show', $question->slug)
             ->with('success', 'Your answer has been updated');
