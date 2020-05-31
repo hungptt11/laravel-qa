@@ -23,10 +23,7 @@
                         ])
                         <div class="media-body">
                             {!! $question->body_html !!}
-                            @include('shared._author', [
-                            'model' => $question,
-                            'lable' => 'Asked'
-                            ])
+                            <author-infor :model="{{ $question}}" lable="Asked"></author-infor>
                         </div>
                     </div>
                 </div>

@@ -36,10 +36,11 @@
                             </div>
                             <div class="col-4"></div>
                             <div class="col-4">
-                                @include('shared._author', [
+                                <!--@include('shared._author', [
                                 'model' => $answer,
                                 'lable' => 'Answered'
-                                ])
+                                ])-->
+                                <author-infor :model="{{ $answer}}" lable="Answered"></author-infor>
                             </div>
                         </div>
 
