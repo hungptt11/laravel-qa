@@ -64,22 +64,30 @@ form.form-delete {
     a {
         cursor: pointer;
         color: $gray-600;
-        &.off, &.off:hover {
+        &.off,
+        &.off:hover {
             color: $gray-400;
         }
 
         &.favorite {
-            &.favorited, &.favorited:hover{
+            &.favorited,
+            &.favorited:hover {
                 color: $warning;
-
             }
         }
 
         &.vote-accept {
-            &.vote-accepted, &.vote-accepted:hover{
+            &.vote-accepted,
+            &.vote-accepted:hover {
                 color: $green;
-
             }
         }
+    }
+}
+
+.post {
+    padding: 20px 0;
+    &:not(:last-child) {
+        border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
     }
 }

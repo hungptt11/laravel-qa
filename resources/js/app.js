@@ -23,8 +23,10 @@ window.Vue = require("vue");
 
 //import authorinfor from "./components/author.vue";
 import AuthorInfo from "./components/author.vue";
+import AnswerInfo from "./components/answer.vue";
 
 Vue.component("author-infor", AuthorInfo);
+Vue.component("answer-infor", AnswerInfo);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
