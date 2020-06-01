@@ -21,7 +21,7 @@
                             <a class="btn btn-sm btn-outline-info" @click.prevent="edit">Edit</a>
                             @endcan
                             @if(Auth::user()->can('delete', $answer))
-                            <button @click.prevent="destroy" class="btn btn-sm btn-outline-danger">Delete</button>
+                            <button @click.prevent="destroy" class="btn btn-sm btn-outline-danger ml-3">Delete</button>
                             @endif
                             @endauth
                         </div>
