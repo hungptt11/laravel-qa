@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Question;
 
 class FavoritesController extends Controller
@@ -15,12 +14,20 @@ class FavoritesController extends Controller
     public function store(Question $question)
     {
         $question->favorites()->attach(auth()->id());
+        if (request()->expectsJson()) {
+            //success but no return content
+            return response()->json(null, 204);
+        }
         return back();
     }
 
     public function destroy(Question $question)
     {
         $question->favorites()->detach(auth()->id());
+        if (request()->expectsJson()) {
+            //success but no return content
+            return response()->json(null, 204);
+        }
         return back();
     }
 }

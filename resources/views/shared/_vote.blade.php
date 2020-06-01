@@ -39,9 +39,10 @@ $firstUrlSegment = 'answers';
         <input type="hidden" name="vote" value="-1">
     </form>
     @if($model instanceof App\Question)
-    @include('shared._favorite', [
+    <!--@include('shared._favorite', [
     'model' => $model
-    ])
+    ])-->
+    <favorite-infor :question="{{$model}}"></favorite-infor>
     @elseif($model instanceof App\Answer)
     @include('shared._accept', [
     'model' => $model

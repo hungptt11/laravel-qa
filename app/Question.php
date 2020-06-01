@@ -10,7 +10,7 @@ class Question extends Model
 {
     use VotableTrait;
     protected $fillable = ['title', 'body'];
-    protected $appends = ['created_date'];
+    protected $appends = ['created_date', 'is_favorited', 'favorites_count'];
     //
     public function User()
     {
@@ -74,12 +74,17 @@ class Question extends Model
         return $this->belongsToMany(User::class, 'favorites', 'question_id', 'user_id')->withTimestamps();
     }
 
+    public function getFavoritesCountAttribute()
+    {
+        return $this->favorites()->count();
+    }
+
     public function isFavorited()
     {
         return $this->favorites()->where('user_id', auth()->id())->count() > 0;
     }
 
-    public function GetisFavoritedAttribute()
+    public function GetIsFavoritedAttribute()
     {
         return $this->isFavorited();
     }
