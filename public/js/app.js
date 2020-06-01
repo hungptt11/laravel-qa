@@ -1910,11 +1910,48 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     answer: Object
+  },
+  data: function data() {
+    return {
+      editing: false,
+      body: this.answer.body,
+      bodyHtml: this.answer.body_html,
+      id: this.answer.id,
+      questionId: this.answer.question_id,
+      beforeEditCache: null
+    };
+  },
+  methods: {
+    edit: function edit() {
+      this.beforeEditCache = this.body;
+      this.editing = true;
+    },
+    cancel: function cancel() {
+      this.body = this.beforeEditCache;
+      this.editing = false;
+    },
+    update: function update() {
+      var _this = this;
+
+      axios.patch("/question/".concat(this.questionId, "/answer/").concat(this.id), {
+        body: this.body
+      }).then(function (res) {
+        console.log(res);
+        _this.editing = false;
+        _this.bodyHtml = res.data.body_html;
+      })["catch"](function (err) {
+        console.log(err);
+        _this.editing = false;
+      });
+    }
+  },
+  computed: {
+    isInvalid: function isInvalid() {
+      return this.body.length < 10;
+    }
   }
 });
 

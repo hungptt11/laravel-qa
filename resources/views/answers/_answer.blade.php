@@ -1,38 +1,48 @@
-<div class="media post">
-    @include('shared._vote', [
-    'model' => $answer
-    ])
-    <div class="media-body">
-        {{ strip_tags($answer->body_html) }}
-        <div class="row">
-            <div class="col-md-4">
-                <div class="d-flex flex-row mr-3">
-                    @auth
-                    @can('update', $answer)
-                    <a class="btn btn-sm btn-outline-info"
-                        href="{{ route('question.answer.edit', [$question->id,$answer->id]) }}">Edit</a>
-                    @endcan
-                    @if(Auth::user()->can('delete', $answer))
-                    <form style="margin-left: 10px"
-                        action="{{ route('question.answer.destroy', [$question->id,$answer->id]) }}" method="POST">
-                        {{method_field('DELETE')}}
-                        @csrf
-                        <button type="submit" onclick="return confirm('Are you sure')"
-                            class="btn btn-sm btn-outline-danger">Delete</button>
-                    </form>
-                    @endif
-                    @endauth
+<answer-infor :answer="{{ $answer }}" inline-template>
+    <div class="media post">
+        @include('shared._vote', [
+        'model' => $answer
+        ])
+        <div class="media-body">
+            <form v-if="editing" @submit.prevent="update">
+                <div class="form-group">
+                    <textarea rows="10" v-model="body" class="form-control" required name="body"></textarea>
                 </div>
-            </div>
-            <div class="col-4"></div>
-            <div class="col-4">
-                <!--@include('shared._author', [
+                <button class="btn btn-outline-primary" :disabled="isInvalid" >Update</button>
+                <button class="btn btn-outline-dark" type="button" @click.prevent="cancel">Cancel</button>
+            </form>
+            <div v-else>
+                <div v-html="bodyHtml"></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="d-flex flex-row mr-3">
+                            @auth
+                            @can('update', $answer)
+                            <a class="btn btn-sm btn-outline-info" @click.prevent="edit">Edit</a>
+                            @endcan
+                            @if(Auth::user()->can('delete', $answer))
+                            <form style="margin-left: 10px"
+                                action="{{ route('question.answer.destroy', [$question->id,$answer->id]) }}"
+                                method="POST">
+                                {{method_field('DELETE')}}
+                                @csrf
+                                <button type="submit" onclick="return confirm('Are you sure')"
+                                    class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                            @endif
+                            @endauth
+                        </div>
+                    </div>
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <!--@include('shared._author', [
                                 'model' => $answer,
                                 'lable' => 'Answered'
                                 ])-->
-                <author-infor :model="{{ $answer}}" lable="Answered"></author-infor>
+                        <author-infor :model="{{ $answer}}" lable="Answered"></author-infor>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
-</div>
+</answer-infor>
