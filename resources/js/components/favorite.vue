@@ -52,7 +52,7 @@ export default {
       if (this.signedIn) {
         this.isFavorited ? this.destroy() : this.create();
       } else {
-        this.$toast.success("please sigin to vote", "warning", {
+        this.$toast.warrning("please sigin to vote", "warning", {
           timeout: 3000,
           postion: "bottomLeft"
         });

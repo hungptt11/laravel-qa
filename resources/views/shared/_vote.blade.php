@@ -44,8 +44,9 @@ $firstUrlSegment = 'answers';
     ])-->
     <favorite-infor :question="{{$model}}"></favorite-infor>
     @elseif($model instanceof App\Answer)
-    @include('shared._accept', [
+    <!--@include('shared._accept', [
     'model' => $model
-    ])
+    ])-->
+    <accept-infor :answer="{{$model}}"></accept-infor>
     @endif
 </div>

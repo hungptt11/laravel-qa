@@ -28,10 +28,12 @@ Vue.use(VueIziToast);
 import AuthorInfo from "./components/author.vue";
 import AnswerInfo from "./components/answer.vue";
 import FavoritedInfo from "./components/favorite.vue";
+import AcceptInfo from "./components/accept.vue";
 
 Vue.component("author-infor", AuthorInfo);
 Vue.component("answer-infor", AnswerInfo);
 Vue.component("favorite-infor", FavoritedInfo);
+Vue.component("accept-infor", AcceptInfo);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
