@@ -1962,7 +1962,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     canAccept: function canAccept() {
-      return true;
+      return this.authorize("accept", this.answer);
     },
     accepted: function accepted() {
       return !this.canAccept && this.isBest;
@@ -1979,13 +1979,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post(this.endPoint).then(function (res) {
-        _this.$toast.success(res.data.message, "OK", {
-          timeout: 2000,
-          postion: "bottomLeft"
-        });
+        _this.$toast.success("You has been marked as accepted answer!", "OK", _this.notificationSystem.options.success);
 
         _this.isBest = true;
-        _this.canAccept = false;
       })["catch"](function (err) {});
     }
   }
@@ -2015,73 +2011,7 @@ __webpack_require__.r(__webpack_exports__);
       bodyHtml: this.answer.body_html,
       id: this.answer.id,
       questionId: this.answer.question_id,
-      beforeEditCache: null,
-      notificationSystem: {
-        options: {
-          show: {
-            theme: "dark",
-            icon: "icon-person",
-            position: "topCenter",
-            progressBarColor: "rgb(0, 255, 184)",
-            buttons: [["<button>Ok</button>", function (instance, toast) {
-              alert("Hello world!");
-            }, true], ["<button>Close</button>", function (instance, toast) {
-              instance.hide({
-                transitionOut: "fadeOutUp",
-                onClosing: function onClosing(instance, toast, closedBy) {
-                  console.info("closedBy: " + closedBy);
-                }
-              }, toast, "buttonName");
-            }]],
-            onOpening: function onOpening(instance, toast) {
-              console.info("callback abriu!");
-            },
-            onClosing: function onClosing(instance, toast, closedBy) {
-              console.info("closedBy: " + closedBy);
-            }
-          },
-          ballon: {
-            balloon: true,
-            position: "bottomCenter"
-          },
-          info: {
-            position: "bottomLeft"
-          },
-          success: {
-            position: "bottomRight"
-          },
-          warning: {
-            position: "topLeft"
-          },
-          error: {
-            position: "topRight"
-          },
-          question: {
-            timeout: 20000,
-            close: false,
-            overlay: true,
-            toastOnce: true,
-            id: "question",
-            zindex: 999,
-            position: "center",
-            buttons: [["<button><b>YES</b></button>", function (instance, toast) {
-              instance.hide({
-                transitionOut: "fadeOut"
-              }, toast, "button");
-            }, true], ["<button>NO</button>", function (instance, toast) {
-              instance.hide({
-                transitionOut: "fadeOut"
-              }, toast, "button");
-            }]],
-            onClosing: function onClosing(instance, toast, closedBy) {
-              console.info("Closing | closedBy: " + closedBy);
-            },
-            onClosed: function onClosed(instance, toast, closedBy) {
-              console.info("Closed | closedBy: " + closedBy);
-            }
-          }
-        }
-      }
+      beforeEditCache: null
     };
   },
   methods: {
@@ -2223,9 +2153,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     endpoint: function endpoint() {
       return "/question/".concat(this.id, "/favorites");
-    },
-    signedIn: function signedIn() {
-      return window.Auth.signedIn;
     }
   },
   methods: {
@@ -2233,10 +2160,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.signedIn) {
         this.isFavorited ? this.destroy() : this.create();
       } else {
-        this.$toast.warrning("please sigin to vote", "warning", {
-          timeout: 3000,
-          postion: "bottomLeft"
-        });
+        this.$toast.warrning("please sigin to vote", "warning", this.notificationSystem.options.warning);
       }
     },
     destroy: function destroy() {
@@ -50846,10 +50770,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_izitoast__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_izitoast__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var izitoast_dist_css_iziToast_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! izitoast/dist/css/iziToast.css */ "./node_modules/izitoast/dist/css/iziToast.css");
 /* harmony import */ var izitoast_dist_css_iziToast_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(izitoast_dist_css_iziToast_css__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_author_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/author.vue */ "./resources/js/components/author.vue");
-/* harmony import */ var _components_answer_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/answer.vue */ "./resources/js/components/answer.vue");
-/* harmony import */ var _components_favorite_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/favorite.vue */ "./resources/js/components/favorite.vue");
-/* harmony import */ var _components_accept_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/accept.vue */ "./resources/js/components/accept.vue");
+/* harmony import */ var _authorization_authorize__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./authorization/authorize */ "./resources/js/authorization/authorize.js");
+/* harmony import */ var _components_author_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/author.vue */ "./resources/js/components/author.vue");
+/* harmony import */ var _components_answer_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/answer.vue */ "./resources/js/components/answer.vue");
+/* harmony import */ var _components_favorite_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/favorite.vue */ "./resources/js/components/favorite.vue");
+/* harmony import */ var _components_accept_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/accept.vue */ "./resources/js/components/accept.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -50861,6 +50786,8 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 
 Vue.use(vue_izitoast__WEBPACK_IMPORTED_MODULE_0___default.a);
+
+Vue.use(_authorization_authorize__WEBPACK_IMPORTED_MODULE_2__["default"]);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -50877,18 +50804,142 @@ Vue.use(vue_izitoast__WEBPACK_IMPORTED_MODULE_0___default.a);
 
 
 
-Vue.component("author-infor", _components_author_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
-Vue.component("answer-infor", _components_answer_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
-Vue.component("favorite-infor", _components_favorite_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
-Vue.component("accept-infor", _components_accept_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
+Vue.component("author-infor", _components_author_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component("answer-infor", _components_answer_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
+Vue.component("favorite-infor", _components_favorite_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
+Vue.component("accept-infor", _components_accept_vue__WEBPACK_IMPORTED_MODULE_6__["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.mixin({
+  data: function data() {
+    return {
+      notificationSystem: {
+        options: {
+          show: {
+            theme: "dark",
+            icon: "icon-person",
+            position: "topCenter",
+            progressBarColor: "rgb(0, 255, 184)",
+            buttons: [["<button>Ok</button>", function (instance, toast) {
+              alert("Hello world!");
+            }, true], ["<button>Close</button>", function (instance, toast) {
+              instance.hide({
+                transitionOut: "fadeOutUp",
+                onClosing: function onClosing(instance, toast, closedBy) {
+                  console.info("closedBy: " + closedBy);
+                }
+              }, toast, "buttonName");
+            }]],
+            onOpening: function onOpening(instance, toast) {
+              console.info("callback abriu!");
+            },
+            onClosing: function onClosing(instance, toast, closedBy) {
+              console.info("closedBy: " + closedBy);
+            }
+          },
+          ballon: {
+            balloon: true,
+            position: "bottomCenter"
+          },
+          info: {
+            position: "bottomLeft"
+          },
+          success: {
+            position: "bottomRight"
+          },
+          warning: {
+            position: "topLeft"
+          },
+          error: {
+            position: "topRight"
+          },
+          question: {
+            timeout: 20000,
+            close: false,
+            overlay: true,
+            toastOnce: true,
+            id: "question",
+            zindex: 999,
+            position: "center",
+            buttons: [["<button><b>YES</b></button>", function (instance, toast) {
+              instance.hide({
+                transitionOut: "fadeOut"
+              }, toast, "button");
+            }, true], ["<button>NO</button>", function (instance, toast) {
+              instance.hide({
+                transitionOut: "fadeOut"
+              }, toast, "button");
+            }]],
+            onClosing: function onClosing(instance, toast, closedBy) {
+              console.info("Closing | closedBy: " + closedBy);
+            },
+            onClosed: function onClosed(instance, toast, closedBy) {
+              console.info("Closed | closedBy: " + closedBy);
+            }
+          }
+        }
+      }
+    };
+  }
+});
 var app = new Vue({
   el: "#app"
+});
+
+/***/ }),
+
+/***/ "./resources/js/authorization/authorize.js":
+/*!*************************************************!*\
+  !*** ./resources/js/authorization/authorize.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _policies__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./policies */ "./resources/js/authorization/policies.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  install: function install(Vue, options) {
+    Vue.prototype.authorize = function (policy, model) {
+      if (!window.Auth.signedIn) {
+        return false;
+      }
+
+      if (typeof policy === "string" && _typeof(model) === "object") {
+        var user = window.Auth.user;
+        return _policies__WEBPACK_IMPORTED_MODULE_0__["default"][policy](user, model);
+      }
+    };
+
+    Vue.prototype.signedIn = window.Auth.signedIn;
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/authorization/policies.js":
+/*!************************************************!*\
+  !*** ./resources/js/authorization/policies.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  modify: function modify(user, model) {
+    return user.id === model.user_id;
+  },
+  accept: function accept(user, model) {
+    return user.id === model.user_id;
+  }
 });
 
 /***/ }),

@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     canAccept() {
-      return true;
+      return this.authorize("accept", this.answer);
     },
     accepted() {
       return !this.canAccept && this.isBest;
@@ -70,12 +70,12 @@ export default {
       axios
         .post(this.endPoint)
         .then(res => {
-          this.$toast.success(res.data.message, "OK", {
-            timeout: 2000,
-            postion: "bottomLeft"
-          });
+          this.$toast.success(
+            "You has been marked as accepted answer!",
+            "OK",
+            this.notificationSystem.options.success
+          );
           this.isBest = true;
-          this.canAccept= false;
         })
         .catch(err => {});
     }

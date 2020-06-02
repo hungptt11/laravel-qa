@@ -43,19 +43,17 @@ export default {
     endpoint() {
       return `/question/${this.id}/favorites`;
     },
-    signedIn() {
-      return window.Auth.signedIn;
-    }
   },
   methods: {
     toggle() {
       if (this.signedIn) {
         this.isFavorited ? this.destroy() : this.create();
       } else {
-        this.$toast.warrning("please sigin to vote", "warning", {
-          timeout: 3000,
-          postion: "bottomLeft"
-        });
+        this.$toast.warrning(
+          "please sigin to vote",
+          "warning",
+          this.notificationSystem.options.warning
+        );
       }
     },
     destroy() {
