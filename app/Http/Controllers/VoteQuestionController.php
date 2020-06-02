@@ -16,9 +16,15 @@ class VoteQuestionController extends Controller
     public function vote(Question $question)
     {
         $vote = (int) request()->vote;
-        auth()->user()->voteQuestion($question, $vote);
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln($vote);
+        $voteCount =  auth()->user()->voteQuestion($question, $vote);
+        //$out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        //$out->writeln($vote);
+        if (request()->expectsJson()) {
+            return response()->json([
+                'message' => 'Thank for the feedback!',
+                'votes_count' => $voteCount,
+            ]);
+        }
         return back();
     }
 }

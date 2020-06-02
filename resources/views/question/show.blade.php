@@ -18,9 +18,10 @@
                     </div>
                     <hr>
                     <div class="media">
-                        @include('shared._vote', [
+                        <!--@include('shared._vote', [
                         'model' => $question
-                        ])
+                        ])-->
+                        <vote-infor :model="{{$question}}" name="question"></vote-infor>
                         <div class="media-body">
                             {!! $question->body_html !!}
                             <author-infor :model="{{ $question}}" lable="Asked"></author-infor>
