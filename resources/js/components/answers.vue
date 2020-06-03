@@ -5,7 +5,12 @@
         <div class="card-body">
           <h2>{{title}}</h2>
           <hr />
-          <answer-infor v-for="model in answers_lst" :key="model.id" :answer="model"></answer-infor>
+          <answer-infor
+            @deleted="remove(index)"
+            v-for="(model, index) in answers_lst"
+            :key="model.id"
+            :answer="model"
+          ></answer-infor>
           <div class="text-center mt-3" v-if="nextUrl">
             <button
               class="btn btn-outline-secondary"
@@ -44,6 +49,10 @@ export default {
         this.answers_lst.push(...data.data);
         this.nextUrl = data.next_page_url;
       });
+    },
+    remove(index) {
+      this.answers_lst.splice(index, 1);
+      this.answers_count--;
     }
   },
   computed: {

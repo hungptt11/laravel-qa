@@ -2085,13 +2085,28 @@ __webpack_require__.r(__webpack_exports__);
     destroy: function destroy() {
       var _this2 = this;
 
-      if (this.$toast.question("Are you sure about that?", "Hi", this.notificationSystem.options.question)) {
-        axios["delete"](this.endpoint).then(function (res) {
-          $(_this2.$el).fadeOut(500, function () {
-            _this2.$toast.success(res.data.message, "OK", _this2.notificationSystem.options.success);
+      this.$toast.question("Are you sure about that?", "Hi", {
+        timeout: 20000,
+        close: false,
+        overlay: true,
+        displayMode: "once",
+        id: "question",
+        zindex: 999,
+        title: "Hey",
+        position: "center",
+        buttons: [["<button><b>YES</b></button>", function (instance, toast) {
+          axios["delete"](_this2.endpoint).then(function (res) {
+            _this2.$emit("deleted");
           });
-        });
-      }
+          instance.hide({
+            transitionOut: "fadeOut"
+          }, toast, "button");
+        }, true], ["<button>NO</button>", function (instance, toast) {
+          instance.hide({
+            transitionOut: "fadeOut"
+          }, toast, "button");
+        }]]
+      });
     }
   },
   computed: {
@@ -2148,6 +2163,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2180,6 +2200,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this.nextUrl = data.next_page_url;
       });
+    },
+    remove: function remove(index) {
+      this.answers_lst.splice(index, 1);
+      this.answers_count--;
     }
   },
   computed: {
@@ -38890,10 +38914,15 @@ var render = function() {
                 _vm._v(" "),
                 _c("hr"),
                 _vm._v(" "),
-                _vm._l(_vm.answers_lst, function(model) {
+                _vm._l(_vm.answers_lst, function(model, index) {
                   return _c("answer-infor", {
                     key: model.id,
-                    attrs: { answer: model }
+                    attrs: { answer: model },
+                    on: {
+                      deleted: function($event) {
+                        return _vm.remove(index)
+                      }
+                    }
                   })
                 }),
                 _vm._v(" "),

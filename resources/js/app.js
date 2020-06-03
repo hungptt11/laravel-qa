@@ -35,7 +35,6 @@ import FavoritedInfo from "./components/favorite.vue";
 import AcceptInfo from "./components/accept.vue";
 import VoteInfo from "./components/vote.vue";
 
-
 Vue.component("author-infor", AuthorInfo);
 Vue.component("answer-infor", AnswerInfo);
 Vue.component("favorite-infor", FavoritedInfo);

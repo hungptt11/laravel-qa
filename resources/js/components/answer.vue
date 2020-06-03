@@ -88,23 +88,34 @@ export default {
         });
     },
     destroy() {
-      if (
-        this.$toast.question(
-          "Are you sure about that?",
-          "Hi",
-          this.notificationSystem.options.question
-        )
-      ) {
-        axios.delete(this.endpoint).then(res => {
-          $(this.$el).fadeOut(500, () => {
-            this.$toast.success(
-              res.data.message,
-              "OK",
-              this.notificationSystem.options.success
-            );
-          });
-        });
-      }
+      this.$toast.question("Are you sure about that?", "Hi", {
+        timeout: 20000,
+        close: false,
+        overlay: true,
+        displayMode: "once",
+        id: "question",
+        zindex: 999,
+        title: "Hey",
+        position: "center",
+        buttons: [
+          [
+            "<button><b>YES</b></button>",
+            (instance, toast) => {
+              axios.delete(this.endpoint).then(res => {
+                this.$emit("deleted");
+              });
+              instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+            },
+            true
+          ],
+          [
+            "<button>NO</button>",
+            function(instance, toast) {
+              instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+            }
+          ]
+        ]
+      });
     }
   },
   computed: {
