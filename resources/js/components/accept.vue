@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import EventBus from "../event_bus";
 export default {
   props: {
     answer: Object
@@ -50,6 +51,11 @@ export default {
       isBest: this.answer.is_best,
       id: this.answer.id
     };
+  },
+  created() {
+    EventBus.$on("accepted", id => {
+      this.isBest = id === this.id;
+    });
   },
   computed: {
     canAccept() {
@@ -75,7 +81,7 @@ export default {
             "OK",
             this.notificationSystem.options.success
           );
-          this.isBest = true;
+          EventBus.$emit("accepted", this.id);
         })
         .catch(err => {});
     }
