@@ -6,6 +6,12 @@
           <h2>{{title}}</h2>
           <hr />
           <answer-infor v-for="model in answers_lst" :key="model.id" :answer="model"></answer-infor>
+          <div class="text-center mt-3" v-if="nextUrl">
+            <button
+              class="btn btn-outline-secondary"
+              @click.prevent="fetch(nextUrl)"
+            >Load More Answer</button>
+          </div>
         </div>
       </div>
     </div>
@@ -16,11 +22,29 @@
 import Answer from "./answer.vue";
 export default {
   props: {
-    answers_count: Number,
-    answers_lst: Array
+    question: Object
+  },
+  data() {
+    return {
+      questionId: this.question.id,
+      answers_count: this.question.answers_count,
+      answers_lst: [],
+      nextUrl: ""
+    };
   },
   components: {
     Answer
+  },
+  created() {
+    this.fetch(`/question/${this.question.id}/answer`);
+  },
+  methods: {
+    fetch(endPoint) {
+      axios.get(endPoint).then(({ data }) => {
+        this.answers_lst.push(...data.data);
+        this.nextUrl = data.next_page_url;
+      });
+    }
   },
   computed: {
     title() {

@@ -40,7 +40,7 @@
     'Answers' => $question->Answers,
     'answers_count' => $question->answers->count()
     ])-->
-    <answers-infor :answers_lst="{{$question->answers}}" :answers_count="{{$question->answers->count()}}">
+    <answers-infor :question="{{$question}}">
     </answers-infor>
 </div>
 @endsection
