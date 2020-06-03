@@ -33,9 +33,17 @@ class AnswersController extends Controller
         $question->answers()->create(['body' => $request->body, 'user_id' => Auth::id()]);*/
 
         //or using below syntax for short
-        $question->answers()->create($request->validate([
+        $answer = $question->answers()->create($request->validate([
             'body' => 'required',
         ]) + ['user_id' => Auth::id()]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Your answer has been updated',
+                //'answer' => Answer::with('user')->find($answer->id),
+                'answer' => $answer->load('user'),
+            ]);
+        }
 
         return back()->with('success', 'Your answer has been created');
     }

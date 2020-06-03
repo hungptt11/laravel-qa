@@ -31,10 +31,10 @@
             </div>
         </div>
     </div>
-    @include('answers._create', [
+    <!--@include('answers._create', [
     'Answers' => $question->Answers,
     'answers_count' => $question->answers->count()
-    ])
+    ])-->
 
     <!--@include('answers._index', [
     'Answers' => $question->Answers,

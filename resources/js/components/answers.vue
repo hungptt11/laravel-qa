@@ -1,21 +1,24 @@
 <template>
-  <div class="row mt-4" v-cloak v-if="answers_count > 0">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <h2>{{title}}</h2>
-          <hr />
-          <answer-infor
-            @deleted="remove(index)"
-            v-for="(model, index) in answers_lst"
-            :key="model.id"
-            :answer="model"
-          ></answer-infor>
-          <div class="text-center mt-3" v-if="nextUrl">
-            <button
-              class="btn btn-outline-secondary"
-              @click.prevent="fetch(nextUrl)"
-            >Load More Answer</button>
+  <div>
+    <new-answer :questionId="questionId" @created="add"></new-answer>
+    <div class="row mt-4" v-cloak v-if="answers_count > 0">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h2>{{title}}</h2>
+            <hr />
+            <answer-infor
+              @deleted="remove(index)"
+              v-for="(model, index) in answers_lst"
+              :key="model.id"
+              :answer="model"
+            ></answer-infor>
+            <div class="text-center mt-3" v-if="nextUrl">
+              <button
+                class="btn btn-outline-secondary"
+                @click.prevent="fetch(nextUrl)"
+              >Load More Answer</button>
+            </div>
           </div>
         </div>
       </div>
@@ -25,6 +28,7 @@
 
 <script>
 import Answer from "./answer.vue";
+import NewAnswer from "./newanswer.vue";
 export default {
   props: {
     question: Object
@@ -38,7 +42,8 @@ export default {
     };
   },
   components: {
-    Answer
+    Answer,
+    NewAnswer
   },
   created() {
     this.fetch(`/question/${this.question.id}/answer`);
@@ -53,6 +58,10 @@ export default {
     remove(index) {
       this.answers_lst.splice(index, 1);
       this.answers_count--;
+    },
+    add(answer) {
+      this.answers_lst.push(answer);
+      this.answers_count++;
     }
   },
   computed: {
