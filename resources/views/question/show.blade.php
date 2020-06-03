@@ -31,17 +31,16 @@
             </div>
         </div>
     </div>
-    @auth
     @include('answers._create', [
     'Answers' => $question->Answers,
     'answers_count' => $question->answers->count()
     ])
-    @endauth
 
-    @include('answers._index', [
+    <!--@include('answers._index', [
     'Answers' => $question->Answers,
     'answers_count' => $question->answers->count()
-    ])
-
+    ])-->
+    <answers-infor :answers_lst="{{$question->answers}}" :answers_count="{{$question->answers->count()}}">
+    </answers-infor>
 </div>
 @endsection

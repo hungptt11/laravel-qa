@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-use Purifier;
 
 use Illuminate\Database\Eloquent\Model;
 use Parsedown;

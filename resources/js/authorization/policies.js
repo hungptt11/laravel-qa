@@ -4,5 +4,8 @@ export default {
     },
     accept(user, model) {
         return user.id === model.user_id;
+    },
+    delete(user, model) {
+        return user.id === model.user_id;
     }
 };
