@@ -7,5 +7,8 @@ export default {
     },
     delete(user, model) {
         return user.id === model.user_id;
+    },
+    delete_ques(user, model) {
+        return user.id === model.user_id && model.questions_count < 1;
     }
 };

@@ -11,7 +11,7 @@ class QuestionController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['show','index']]);
+        $this->middleware('auth', ['except' => ['show', 'index']]);
     }
 
     /**
@@ -92,7 +92,15 @@ class QuestionController extends Controller
      */
     public function update(AskQuestionRequest $request, Question $question)
     {
+        $this->authorize("update", $question);
         $question->update($request->only('title', 'body'));
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Your question has been updated',
+                'body_html' => $question->body_html,
+            ]);
+        }
         return redirect()->route('question.index')->with('success', 'Your\' question has been updated');
     }
 
@@ -106,6 +114,13 @@ class QuestionController extends Controller
     {
         $this->authorize("delete", $question);
         $question->delete();
+        dd('store');
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Your question has been deleted',
+            ]);
+        }
         return redirect()->route('question.index')->with('success', 'Your\' question has been deleted');
     }
 }
