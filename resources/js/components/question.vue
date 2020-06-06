@@ -86,83 +86,40 @@ export default {
     }
   },
   methods: {
-    edit() {
+    setEditCache() {
       this.boforeEditCache = {
         body: this.body_html,
         title: this.title
       };
-      this.editing = true;
     },
-    cancel() {
+    restoreCachData() {
       this.body = this.boforeEditCache.body;
       this.title = this.boforeEditCache.title;
-      this.editing = false;
     },
-    update() {
+    bodyBinding() {
+      return {
+        body: this.body,
+        title: this.title
+      };
+    },
+    destroyExecution() {
       axios
-        .put(this.endPoint, {
-          body: this.body,
-          title: this.title
-        })
-        .then(result => {
-          this.$toast.success(
-            result.data.message,
-            "OK",
-            this.notificationSystem.options.success
-          );
-          this.body_html = result.data.body_html;
-          this.editing = false;
+        .delete(`/question/${this.id}`)
+        .then(res => {
+          setTimeout(() => {
+            window.location.href = "/question";
+          }, 3000);
         })
         .catch(err => {
           this.$toast.warning(
-            "Update Error!",
+            "Delete Error!",
             "OK",
             this.notificationSystem.options.warning
           );
-          this.cancel();
         });
     },
-    destroy() {
-      this.$toast.question("Are you sure about that?", "Hi", {
-        timeout: 20000,
-        close: false,
-        overlay: true,
-        displayMode: "once",
-        id: "question",
-        zindex: 999,
-        title: "Hey",
-        position: "center",
-        buttons: [
-          [
-            "<button><b>YES</b></button>",
-            (instance, toast) => {
-              axios
-                .delete(`/question/${this.id}`)
-                .then(res => {
-                  setTimeout(() => {
-                    window.location.href = "/question";
-                  }, 3000);
-                })
-                .catch(err => {
-                  this.$toast.warning(
-                    "Delete Error!",
-                    "OK",
-                    this.notificationSystem.options.warning
-                  );
-                });
-
-              instance.hide({ transitionOut: "fadeOut" }, toast, "button");
-            },
-            true
-          ],
-          [
-            "<button>NO</button>",
-            function(instance, toast) {
-              instance.hide({ transitionOut: "fadeOut" }, toast, "button");
-            }
-          ]
-        ]
-      });
+    getEndPoint() {
+      return this.endpoint;
     }
   }
 };

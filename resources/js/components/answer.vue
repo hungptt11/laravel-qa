@@ -13,7 +13,7 @@
         <button class="btn btn-outline-dark" type="button" @click.prevent="cancel">Cancel</button>
       </form>
       <div v-else>
-        <div v-html="bodyHtml"></div>
+        <div v-html="body_html"></div>
         <div class="row">
           <div class="col-md-4">
             <div class="d-flex flex-row mr-3">
@@ -44,78 +44,40 @@
 </template>
 
 <script>
+import MixinsAllInOne from "../mixins/allinone";
 export default {
   props: {
     answer: Object
   },
+  mixins: [MixinsAllInOne],
   data() {
     return {
-      editing: false,
       body: this.answer.body,
-      bodyHtml: this.answer.body_html,
+      body_html: this.answer.body_html,
       id: this.answer.id,
       questionId: this.answer.question_id,
       beforeEditCache: null
     };
   },
   methods: {
-    edit() {
+    setEditCache() {
       this.beforeEditCache = this.body;
-      this.editing = true;
     },
-    cancel() {
+    restoreCachData() {
       this.body = this.beforeEditCache;
-      this.editing = false;
     },
-    update() {
-      axios
-        .patch(this.endpoint, {
-          body: this.body
-        })
-        .then(res => {
-          //console.log(res);
-          this.editing = false;
-          this.bodyHtml = res.data.body_html;
-          this.$toast.success(
-            res.data.message,
-            "OK",
-            this.notificationSystem.options.success
-          );
-        })
-        .catch(err => {
-          console.log(err);
-          this.cancel();
-        });
+    bodyBinding() {
+      return {
+        body: this.body
+      };
     },
-    destroy() {
-      this.$toast.question("Are you sure about that?", "Hi", {
-        timeout: 20000,
-        close: false,
-        overlay: true,
-        displayMode: "once",
-        id: "question",
-        zindex: 999,
-        title: "Hey",
-        position: "center",
-        buttons: [
-          [
-            "<button><b>YES</b></button>",
-            (instance, toast) => {
-              axios.delete(this.endpoint).then(res => {
-                this.$emit("deleted");
-              });
-              instance.hide({ transitionOut: "fadeOut" }, toast, "button");
-            },
-            true
-          ],
-          [
-            "<button>NO</button>",
-            function(instance, toast) {
-              instance.hide({ transitionOut: "fadeOut" }, toast, "button");
-            }
-          ]
-        ]
+    destroyExecution() {
+      axios.delete(this.endpoint).then(res => {
+        this.$emit("deleted");
       });
+    },
+    getEndPoint() {
+      return this.endpoint;
     }
   },
   computed: {

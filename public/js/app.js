@@ -2007,6 +2007,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_allinone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/allinone */ "./resources/js/mixins/allinone.js");
 //
 //
 //
@@ -2052,71 +2053,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     answer: Object
   },
+  mixins: [_mixins_allinone__WEBPACK_IMPORTED_MODULE_0__["default"]],
   data: function data() {
     return {
-      editing: false,
       body: this.answer.body,
-      bodyHtml: this.answer.body_html,
+      body_html: this.answer.body_html,
       id: this.answer.id,
       questionId: this.answer.question_id,
       beforeEditCache: null
     };
   },
   methods: {
-    edit: function edit() {
+    setEditCache: function setEditCache() {
       this.beforeEditCache = this.body;
-      this.editing = true;
     },
-    cancel: function cancel() {
+    restoreCachData: function restoreCachData() {
       this.body = this.beforeEditCache;
-      this.editing = false;
     },
-    update: function update() {
+    bodyBinding: function bodyBinding() {
+      return {
+        body: this.body
+      };
+    },
+    destroyExecution: function destroyExecution() {
       var _this = this;
 
-      axios.patch(this.endpoint, {
-        body: this.body
-      }).then(function (res) {
-        //console.log(res);
-        _this.editing = false;
-        _this.bodyHtml = res.data.body_html;
-
-        _this.$toast.success(res.data.message, "OK", _this.notificationSystem.options.success);
-      })["catch"](function (err) {
-        console.log(err);
-
-        _this.cancel();
+      axios["delete"](this.endpoint).then(function (res) {
+        _this.$emit("deleted");
       });
     },
-    destroy: function destroy() {
-      var _this2 = this;
-
-      this.$toast.question("Are you sure about that?", "Hi", {
-        timeout: 20000,
-        close: false,
-        overlay: true,
-        displayMode: "once",
-        id: "question",
-        zindex: 999,
-        title: "Hey",
-        position: "center",
-        buttons: [["<button><b>YES</b></button>", function (instance, toast) {
-          axios["delete"](_this2.endpoint).then(function (res) {
-            _this2.$emit("deleted");
-          });
-          instance.hide({
-            transitionOut: "fadeOut"
-          }, toast, "button");
-        }, true], ["<button>NO</button>", function (instance, toast) {
-          instance.hide({
-            transitionOut: "fadeOut"
-          }, toast, "button");
-        }]]
-      });
+    getEndPoint: function getEndPoint() {
+      return this.endpoint;
     }
   },
   computed: {
@@ -2525,64 +2497,35 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    edit: function edit() {
+    setEditCache: function setEditCache() {
       this.boforeEditCache = {
         body: this.body_html,
         title: this.title
       };
-      this.editing = true;
     },
-    cancel: function cancel() {
+    restoreCachData: function restoreCachData() {
       this.body = this.boforeEditCache.body;
       this.title = this.boforeEditCache.title;
-      this.editing = false;
     },
-    update: function update() {
-      var _this = this;
-
-      axios.put(this.endPoint, {
+    bodyBinding: function bodyBinding() {
+      return {
         body: this.body,
         title: this.title
-      }).then(function (result) {
-        _this.$toast.success(result.data.message, "OK", _this.notificationSystem.options.success);
+      };
+    },
+    destroyExecution: function destroyExecution() {
+      var _this = this;
 
-        _this.body_html = result.data.body_html;
-        _this.editing = false;
+      axios["delete"]("/question/".concat(this.id)).then(function (res) {
+        setTimeout(function () {
+          window.location.href = "/question";
+        }, 3000);
       })["catch"](function (err) {
-        _this.$toast.warning("Update Error!", "OK", _this.notificationSystem.options.warning);
-
-        _this.cancel();
+        _this.$toast.warning("Delete Error!", "OK", _this.notificationSystem.options.warning);
       });
     },
-    destroy: function destroy() {
-      var _this2 = this;
-
-      this.$toast.question("Are you sure about that?", "Hi", {
-        timeout: 20000,
-        close: false,
-        overlay: true,
-        displayMode: "once",
-        id: "question",
-        zindex: 999,
-        title: "Hey",
-        position: "center",
-        buttons: [["<button><b>YES</b></button>", function (instance, toast) {
-          axios["delete"]("/question/".concat(_this2.id)).then(function (res) {
-            setTimeout(function () {
-              window.location.href = "/question";
-            }, 3000);
-          })["catch"](function (err) {
-            _this2.$toast.warning("Delete Error!", "OK", _this2.notificationSystem.options.warning);
-          });
-          instance.hide({
-            transitionOut: "fadeOut"
-          }, toast, "button");
-        }, true], ["<button>NO</button>", function (instance, toast) {
-          instance.hide({
-            transitionOut: "fadeOut"
-          }, toast, "button");
-        }]]
-      });
+    getEndPoint: function getEndPoint() {
+      return this.endpoint;
     }
   }
 });
@@ -39108,7 +39051,7 @@ var render = function() {
               ]
             )
           : _c("div", [
-              _c("div", { domProps: { innerHTML: _vm._s(_vm.bodyHtml) } }),
+              _c("div", { domProps: { innerHTML: _vm._s(_vm.body_html) } }),
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-md-4" }, [
@@ -52784,6 +52727,81 @@ __webpack_require__.r(__webpack_exports__);
 
 var eventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 /* harmony default export */ __webpack_exports__["default"] = (eventBus);
+
+/***/ }),
+
+/***/ "./resources/js/mixins/allinone.js":
+/*!*****************************************!*\
+  !*** ./resources/js/mixins/allinone.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      editing: false,
+      endPoint: ""
+    };
+  },
+  methods: {
+    edit: function edit() {
+      this.setEditCache();
+      this.editing = true;
+    },
+    cancel: function cancel() {
+      this.restoreCachData();
+      this.editing = false;
+    },
+    setEditCache: function setEditCache() {},
+    restoreCachData: function restoreCachData() {},
+    update: function update() {
+      var _this = this;
+
+      debugger;
+      axios.put(this.getEndPoint(), this.bodyBinding()).then(function (result) {
+        _this.$toast.success(result.data.message, "OK", _this.notificationSystem.options.success);
+
+        _this.body_html = result.data.body_html;
+        _this.editing = false;
+      })["catch"](function (err) {
+        _this.$toast.warning("Update Error!", "OK", _this.notificationSystem.options.warning);
+
+        _this.cancel();
+      });
+    },
+    bodyBinding: function bodyBinding() {},
+    destroyExecution: function destroyExecution() {},
+    destroy: function destroy() {
+      var _this2 = this;
+
+      this.$toast.question("Are you sure about that?", "Hi", {
+        timeout: 20000,
+        close: false,
+        overlay: true,
+        displayMode: "once",
+        id: "question",
+        zindex: 999,
+        title: "Hey",
+        position: "center",
+        buttons: [["<button><b>YES</b></button>", function (instance, toast) {
+          _this2.destroyExecution();
+
+          instance.hide({
+            transitionOut: "fadeOut"
+          }, toast, "button");
+        }, true], ["<button>NO</button>", function (instance, toast) {
+          instance.hide({
+            transitionOut: "fadeOut"
+          }, toast, "button");
+        }]]
+      });
+    },
+    getEndPoint: function getEndPoint() {}
+  }
+});
 
 /***/ }),
 
